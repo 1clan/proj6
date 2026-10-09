@@ -1,0 +1,2221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="GovOne — the unified life management portal of the Government of One. Finance, Metrics, Directives, Compliance, Planning, Records and Attention." />
+  <title>GovOne — Unified Life Management Portal</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath d='M16 2l12 5v9c0 8-5.5 12.5-12 14C9.5 28.5 4 24 4 16V7z' fill='%231a4fd6'/%3E%3Cpath d='M16 9l2 4.2 4.6.6-3.4 3.2.9 4.6L16 19.5 11.9 21.6l.9-4.6L9.4 13.8l4.6-.6z' fill='%23fff'/%3E%3C/svg%3E" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --ink: #0f1a2e;
+      --ink-2: #1d2a44;
+      --paper: #ffffff;
+      --bg: #eef1f7;
+      --panel: #f7f8fb;
+      --line: #ccd4e4;
+      --line-2: #e4e9f3;
+      --muted: #5c6883;
+      --brand: #1a4fd6;
+      --brand-dk: #12379a;
+      --brand-tint: #eef3ff;
+      --gold: #b1841f;
+      --green: #0f8a4e;
+      --green-tint: #e8f6ee;
+      --amber: #b26a05;
+      --amber-tint: #fdf3e3;
+      --red: #c62828;
+      --red-tint: #fdeeee;
+      --teal: #0a7f96;
+      --teal-tint: #e7f5f8;
+      --violet: #6a3fc0;
+      --violet-tint: #f1ecfc;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--bg);
+      color: var(--ink);
+      font-family: "Public Sans", system-ui, sans-serif;
+      font-size: 15px;
+      line-height: 1.55;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    ::selection { background: var(--brand); color: #fff; }
+
+    button, input, select, textarea { font-family: inherit; }
+
+    .mono { font-family: "IBM Plex Mono", ui-monospace, monospace; }
+
+    /* ---------- official banner ---------- */
+    .banner { background: var(--ink); color: #fff; }
+    .banner-in {
+      max-width: 1440px;
+      margin: 0 auto;
+      padding: 9px 20px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+    .banner-in .crest { width: 17px; height: 20px; flex: none; }
+    .banner-in .go {
+      font-weight: 800;
+      font-size: 13.5px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+    .banner-note {
+      font-size: 12.5px;
+      color: #b9c2d6;
+      border-left: 1px solid #33405c;
+      padding-left: 14px;
+    }
+    .banner-in .spacer { flex: 1; }
+    .banner-date {
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 12px;
+      color: #b9c2d6;
+      letter-spacing: 0.04em;
+    }
+
+    /* ---------- shell ---------- */
+    .shell {
+      max-width: 1440px;
+      margin: 0 auto;
+      background: var(--paper);
+      border-left: 1px solid var(--line);
+      border-right: 1px solid var(--line);
+      display: grid;
+      grid-template-columns: 268px minmax(0, 1fr);
+      min-height: calc(100vh - 42px);
+    }
+
+    /* ---------- department nav ---------- */
+    .dept {
+      border-right: 1px solid var(--line);
+      background: var(--paper);
+      display: flex;
+      flex-direction: column;
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      overflow-y: auto;
+    }
+
+    .seal {
+      padding: 22px 18px 18px;
+      border-bottom: 3px solid var(--ink);
+      display: flex;
+      gap: 12px;
+      align-items: center;
+    }
+    .seal svg { width: 34px; height: 40px; flex: none; }
+    .seal .s1 {
+      font-size: 14px;
+      font-weight: 800;
+      letter-spacing: -0.01em;
+      line-height: 1.2;
+    }
+    .seal .s2 {
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 10px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-top: 3px;
+    }
+
+    .nav-label {
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 10px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--muted);
+      padding: 16px 18px 8px;
+    }
+
+    .nav { display: flex; flex-direction: column; }
+
+    .nav-btn {
+      appearance: none;
+      border: 0;
+      border-left: 4px solid transparent;
+      background: transparent;
+      text-align: left;
+      padding: 10px 16px 10px 14px;
+      cursor: pointer;
+      display: flex;
+      align-items: baseline;
+      gap: 10px;
+      color: var(--ink-2);
+      transition: background .14s, border-color .14s;
+    }
+    .nav-btn .code {
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 11px;
+      color: var(--muted);
+      letter-spacing: 0.06em;
+      flex: none;
+    }
+    .nav-btn .nm { font-size: 14.5px; font-weight: 500; }
+    .nav-btn:hover { background: var(--panel); }
+    .nav-btn.active {
+      background: var(--brand-tint);
+      border-left-color: var(--brand);
+    }
+    .nav-btn.active .nm { font-weight: 700; }
+    .nav-btn.active .code { color: var(--brand); }
+
+    .dept-foot {
+      margin-top: auto;
+      padding: 16px 18px;
+      border-top: 1px solid var(--line);
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .dept-foot .meta {
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 10.5px;
+      color: var(--muted);
+      line-height: 1.7;
+    }
+    .dept-foot .meta b { color: var(--ink); font-weight: 500; }
+
+    /* ---------- main ---------- */
+    main { min-width: 0; display: flex; flex-direction: column; background: var(--paper); }
+
+    .crumb {
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 11.5px;
+      color: var(--muted);
+      padding: 12px 26px;
+      border-bottom: 1px solid var(--line);
+      background: var(--panel);
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+    .crumb b { color: var(--ink); font-weight: 600; }
+    .crumb .sep { color: var(--line); }
+
+    .view { padding: 0 0 30px; flex: 1; }
+
+    /* ---------- department head ---------- */
+    .dept-head {
+      padding: 26px 26px 20px;
+      border-bottom: 3px solid var(--ink);
+      display: flex;
+      justify-content: space-between;
+      gap: 20px;
+      align-items: flex-end;
+      flex-wrap: wrap;
+    }
+    .dept-head .kicker {
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 10.5px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--brand);
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+    .dept-head h1 {
+      font-size: clamp(1.7rem, 3.6vw, 2.35rem);
+      font-weight: 800;
+      letter-spacing: -0.025em;
+      line-height: 1.1;
+    }
+    .dept-head .sub {
+      color: var(--muted);
+      font-size: 14.5px;
+      margin-top: 7px;
+      max-width: 70ch;
+    }
+    .dept-head .ref {
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 11px;
+      color: var(--muted);
+      border: 1px solid var(--line);
+      padding: 6px 10px;
+      background: var(--panel);
+      white-space: nowrap;
+    }
+
+    .pad { padding: 22px 26px; }
+
+    /* ---------- blocks ---------- */
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(178px, 1fr));
+      gap: 12px;
+      margin-bottom: 18px;
+    }
+
+    .stat {
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-top: 4px solid var(--c, var(--brand));
+      padding: 13px 15px;
+    }
+    .stat .k {
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 10px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+    .stat .v {
+      font-size: 27px;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      margin-top: 6px;
+      line-height: 1.05;
+      font-variant-numeric: tabular-nums;
+    }
+    .stat .v small { font-size: 14px; font-weight: 600; color: var(--muted); margin-left: 3px; }
+    .stat .h { font-size: 12.5px; color: var(--muted); margin-top: 5px; }
+
+    .doc {
+      border: 1px solid var(--line);
+      background: var(--paper);
+      margin-bottom: 16px;
+    }
+    .doc-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 9px 14px;
+      background: var(--panel);
+      border-bottom: 1px solid var(--line);
+    }
+    .doc-head h2 {
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--ink-2);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .doc-head h2::before {
+      content: "";
+      width: 8px; height: 8px;
+      background: var(--brand);
+      flex: none;
+    }
+    .doc-head .meta {
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 11px;
+      color: var(--muted);
+    }
+    .doc-body { padding: 15px; }
+    .doc-body.flush { padding: 0; }
+
+    .cols {
+      display: grid;
+      grid-template-columns: 1.3fr 1fr;
+      gap: 16px;
+      align-items: start;
+    }
+    .stack { display: flex; flex-direction: column; gap: 0; }
+
+    .notice {
+      border-left: 4px solid var(--brand);
+      background: var(--brand-tint);
+      padding: 12px 15px;
+      margin-bottom: 18px;
+    }
+    .notice .lbl {
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 10px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--brand);
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+    .notice p { font-size: 14px; color: var(--ink-2); }
+
+    /* ---------- forms & buttons ---------- */
+    .form-row { display: flex; gap: 9px; flex-wrap: wrap; align-items: stretch; }
+
+    .field {
+      background: var(--paper);
+      border: 1px solid var(--line);
+      color: var(--ink);
+      font-size: 14.5px;
+      padding: 10px 12px;
+      outline: none;
+      min-width: 0;
+      transition: border-color .14s, box-shadow .14s;
+    }
+    .field::placeholder { color: #93a0b8; }
+    .field:focus {
+      border-color: var(--brand);
+      box-shadow: 0 0 0 3px rgba(26, 79, 214, 0.18);
+    }
+    .grow { flex: 1; min-width: 160px; }
+    .w90 { width: 110px; flex: none; }
+    .w140 { width: 140px; flex: none; }
+
+    .btn {
+      appearance: none;
+      border: 1px solid var(--brand);
+      background: var(--brand);
+      color: #fff;
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 10px 16px;
+      cursor: pointer;
+      transition: background .14s, color .14s, border-color .14s;
+      white-space: nowrap;
+    }
+    .btn:hover { background: var(--brand-dk); border-color: var(--brand-dk); }
+    .btn.ghost { background: var(--paper); color: var(--ink); border-color: var(--line); }
+    .btn.ghost:hover { background: var(--panel); border-color: var(--ink); }
+    .btn.ok { background: var(--green); border-color: var(--green); }
+    .btn.ok:hover { background: #0b6f3f; border-color: #0b6f3f; }
+    .btn.warn { background: var(--paper); color: var(--amber); border-color: var(--amber); }
+    .btn.warn:hover { background: var(--amber-tint); }
+    .btn.danger { background: var(--paper); color: var(--red); border-color: var(--red); }
+    .btn.danger:hover { background: var(--red-tint); }
+    .btn.sm { padding: 6px 10px; font-size: 11px; }
+    .btn.tiny { padding: 7px 9px; font-size: 10.5px; }
+
+    .seg { display: inline-flex; border: 1px solid var(--line); background: var(--paper); flex-wrap: wrap; }
+    .seg button {
+      appearance: none;
+      border: 0;
+      background: transparent;
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 11px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--muted);
+      padding: 7px 12px;
+      cursor: pointer;
+      border-right: 1px solid var(--line);
+    }
+    .seg button:last-child { border-right: 0; }
+    .seg button:hover { background: var(--panel); color: var(--ink); }
+    .seg button.on { background: var(--ink); color: #fff; }
+
+    /* ---------- chips / stamps ---------- */
+    .chip {
+      display: inline-block;
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: 3px 7px;
+      border: 1px solid;
+      white-space: nowrap;
+    }
+    .chip.issued   { color: var(--amber); border-color: var(--amber); background: var(--amber-tint); }
+    .chip.passed   { color: var(--green); border-color: var(--green); background: var(--green-tint); }
+    .chip.withdrawn{ color: var(--red);   border-color: var(--red);   background: var(--red-tint); }
+    .chip.pending  { color: var(--amber); border-color: var(--amber); background: var(--amber-tint); }
+    .chip.completed{ color: var(--green); border-color: var(--green); background: var(--green-tint); }
+    .chip.high     { color: var(--red);   border-color: var(--red);   background: var(--red-tint); }
+    .chip.normal   { color: var(--brand); border-color: var(--brand); background: var(--brand-tint); }
+    .chip.low      { color: var(--muted); border-color: var(--line);  background: var(--panel); }
+    .chip.ok       { color: var(--green); border-color: var(--green); background: var(--green-tint); }
+    .chip.warn     { color: var(--amber); border-color: var(--amber); background: var(--amber-tint); }
+    .chip.crit     { color: var(--red);   border-color: var(--red);   background: var(--red-tint); }
+    .chip.info     { color: var(--teal);  border-color: var(--teal);  background: var(--teal-tint); }
+    .chip.neutral  { color: var(--muted); border-color: var(--line);  background: var(--panel); }
+
+    .stamp {
+      display: inline-block;
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--green);
+      border: 2px solid var(--green);
+      padding: 2px 7px;
+      transform: rotate(-6deg);
+      margin-left: 8px;
+      opacity: 0.9;
+    }
+
+    /* ---------- tables ---------- */
+    .ledger { width: 100%; border-collapse: collapse; }
+    .ledger th {
+      text-align: left;
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--muted);
+      padding: 10px 14px;
+      border-bottom: 2px solid var(--ink);
+      background: var(--paper);
+      white-space: nowrap;
+    }
+    .ledger td {
+      padding: 12px 14px;
+      border-bottom: 1px solid var(--line-2);
+      vertical-align: middle;
+      font-size: 14.5px;
+    }
+    .ledger tbody tr:hover { background: var(--panel); }
+    .ledger .ref {
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 11.5px;
+      color: var(--muted);
+      white-space: nowrap;
+    }
+    .ledger .ttl { font-weight: 600; }
+    .ledger .cat {
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 10.5px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-top: 2px;
+    }
+    .ledger .amt {
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 14.5px;
+      font-weight: 600;
+      text-align: right;
+      white-space: nowrap;
+      font-variant-numeric: tabular-nums;
+    }
+    .ledger .amt.pos { color: var(--green); }
+    .ledger .amt.neg { color: var(--ink); }
+    .ledger .act { text-align: right; white-space: nowrap; }
+    .ledger .act .btn { margin-left: 6px; }
+    .ledger .dt {
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 11.5px;
+      color: var(--muted);
+      white-space: nowrap;
+    }
+
+    /* ---------- bars ---------- */
+    .bar { height: 10px; background: var(--line-2); overflow: hidden; }
+    .bar i {
+      display: block;
+      height: 100%;
+      background: var(--c, var(--brand));
+      transition: width .4s cubic-bezier(.2,.8,.2,1);
+    }
+
+    .cat-row {
+      display: grid;
+      grid-template-columns: 128px 1fr 96px;
+      gap: 12px;
+      align-items: center;
+      padding: 9px 0;
+      border-bottom: 1px solid var(--line-2);
+      font-size: 13.5px;
+    }
+    .cat-row:last-child { border-bottom: 0; }
+    .cat-row .lbl {
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 11px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--ink-2);
+    }
+    .cat-row .val {
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 12.5px;
+      text-align: right;
+      font-variant-numeric: tabular-nums;
+    }
+
+    /* ---------- registers (lists) ---------- */
+    .row {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 12px 14px;
+      border-bottom: 1px solid var(--line-2);
+      transition: background .12s;
+    }
+    .row:last-child { border-bottom: 0; }
+    .row:hover { background: var(--panel); }
+    .row .body { flex: 1; min-width: 0; }
+    .row .t { font-size: 14.5px; font-weight: 600; }
+    .row .m {
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 10.5px;
+      color: var(--muted);
+      letter-spacing: 0.06em;
+      margin-top: 3px;
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .del {
+      appearance: none;
+      border: 1px solid transparent;
+      background: transparent;
+      color: var(--muted);
+      cursor: pointer;
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 15px;
+      line-height: 1;
+      padding: 5px 7px;
+      opacity: 0;
+      transition: .14s;
+    }
+    .row:hover .del { opacity: 1; }
+    .del:hover { color: var(--red); border-color: var(--red); background: var(--red-tint); }
+
+    /* compliance register */
+    .reg { display: flex; align-items: center; gap: 14px; padding: 12px 14px; border-bottom: 1px solid var(--line-2); flex-wrap: wrap; }
+    .reg:last-child { border-bottom: 0; }
+    .reg .nm { width: 172px; flex: none; font-size: 14.5px; font-weight: 600; }
+    .reg .nm span {
+      display: block;
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 10.5px;
+      font-weight: 400;
+      color: var(--muted);
+      letter-spacing: 0.06em;
+      margin-top: 2px;
+    }
+    .days { display: flex; gap: 5px; flex: 1; flex-wrap: wrap; }
+    .day {
+      appearance: none;
+      width: 21px; height: 21px;
+      border: 1px solid var(--line);
+      background: var(--paper);
+      cursor: pointer;
+      padding: 0;
+      transition: .12s;
+    }
+    .day:hover { border-color: var(--brand); transform: translateY(-1px); }
+    .day.on { background: var(--c, var(--brand)); border-color: var(--c, var(--brand)); }
+    .day.today { outline: 2px solid var(--ink); outline-offset: 2px; }
+    .reg .streak {
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 11.5px;
+      color: var(--muted);
+      width: 96px;
+      text-align: right;
+      flex: none;
+    }
+    .reg .streak b { color: var(--gold); }
+
+    /* ---------- metrics ---------- */
+    .index-panel {
+      border: 1px solid var(--line);
+      border-top: 4px solid var(--brand);
+      background: var(--paper);
+      padding: 20px;
+      margin-bottom: 16px;
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 26px;
+      align-items: center;
+    }
+    .index-panel .big {
+      font-family: "IBM Plex Mono", monospace;
+      font-size: clamp(56px, 9vw, 86px);
+      font-weight: 600;
+      line-height: 0.9;
+      letter-spacing: -0.04em;
+      font-variant-numeric: tabular-nums;
+    }
+    .index-panel .big small {
+      font-size: 22px;
+      color: var(--muted);
+      letter-spacing: 0;
+    }
+    .index-panel .il {
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 10.5px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 8px;
+    }
+    .index-panel .gauge { height: 16px; background: var(--line-2); margin: 12px 0 10px; }
+    .index-panel .gauge i { display: block; height: 100%; background: var(--brand); transition: width .5s; }
+    .index-panel .irow { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+    .index-panel .note { font-size: 13px; color: var(--muted); }
+
+    .mcards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(238px, 1fr));
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+    .mcard {
+      border: 1px solid var(--line);
+      background: var(--paper);
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 9px;
+      border-top: 4px solid var(--c, var(--brand));
+    }
+    .mcard .mtop { display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; }
+    .mcard .mcode {
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 10px;
+      letter-spacing: 0.14em;
+      color: var(--muted);
+      text-transform: uppercase;
+    }
+    .mcard .mname { font-size: 15px; font-weight: 700; letter-spacing: -0.01em; }
+    .mcard .grade {
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 24px;
+      font-weight: 600;
+      line-height: 1;
+      color: var(--c, var(--brand));
+    }
+    .mcard .mval {
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 13px;
+      color: var(--ink-2);
+      font-variant-numeric: tabular-nums;
+    }
+    .mcard .mval span { color: var(--muted); }
+    .mcard .mfoot { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
+
+    .hist {
+      display: flex;
+      gap: 8px;
+      align-items: flex-end;
+      height: 132px;
+      padding-top: 6px;
+    }
+    .hist .col { flex: 1; display: flex; flex-direction: column; justify-content: flex-end; align-items: center; gap: 6px; height: 100%; }
+    .hist .b {
+      width: 100%;
+      background: var(--brand);
+      min-height: 3px;
+      transition: height .4s;
+    }
+    .hist .col.today .b { background: var(--ink); }
+    .hist .n {
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 10.5px;
+      color: var(--muted);
+      font-variant-numeric: tabular-nums;
+    }
+    .hist .col.today .n { color: var(--ink); font-weight: 600; }
+
+    /* ---------- attention ---------- */
+    .timer-wrap { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; align-items: start; }
+    .timer {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 18px;
+      padding: 30px 18px 26px;
+      text-align: center;
+    }
+    .timer .t {
+      font-family: "IBM Plex Mono", monospace;
+      font-size: clamp(58px, 11vw, 88px);
+      font-weight: 600;
+      letter-spacing: -0.05em;
+      line-height: 1;
+      font-variant-numeric: tabular-nums;
+    }
+    .timer .mode {
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 11px;
+      letter-spacing: 0.24em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+    .timer .gauge { width: 100%; height: 14px; background: var(--line-2); }
+    .timer .gauge i { display: block; height: 100%; background: var(--brand); transition: width 1s linear; }
+    .timer-ctrl { display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; }
+    .dots { display: flex; gap: 8px; }
+    .dots i { width: 11px; height: 11px; background: var(--line-2); border: 1px solid var(--line); }
+    .dots i.on { background: var(--green); border-color: var(--green); }
+
+    .order { display: flex; gap: 12px; padding: 11px 0; border-bottom: 1px solid var(--line-2); font-size: 14px; }
+    .order:last-child { border-bottom: 0; }
+    .order .n {
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 11.5px;
+      color: var(--brand);
+      font-weight: 600;
+      flex: none;
+      padding-top: 2px;
+    }
+
+    .empty {
+      padding: 30px 16px;
+      text-align: center;
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 12.5px;
+      color: var(--muted);
+      letter-spacing: 0.04em;
+    }
+
+    .dir-list .row { cursor: pointer; }
+    .dir-list .row:hover { background: var(--brand-tint); }
+    .dir-list .code {
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 11px;
+      color: var(--brand);
+      width: 44px;
+      flex: none;
+      font-weight: 600;
+    }
+
+    /* ---------- colophon / toast ---------- */
+    .colophon {
+      border-top: 1px solid var(--line);
+      background: var(--panel);
+      padding: 11px 26px;
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 11px;
+      color: var(--muted);
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+    .colophon b { color: var(--ink); font-weight: 500; }
+    .colophon .ok { color: var(--green); }
+    .colophon .sep { color: var(--line); }
+
+    #toast {
+      position: fixed;
+      bottom: 22px; left: 50%;
+      transform: translate(-50%, 18px);
+      background: var(--ink);
+      color: #fff;
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 12.5px;
+      padding: 11px 17px;
+      border: 1px solid var(--ink);
+      opacity: 0;
+      pointer-events: none;
+      transition: .22s ease;
+      z-index: 80;
+      max-width: 90vw;
+    }
+    #toast.show { opacity: 1; transform: translate(-50%, 0); }
+    #toast .lbl { color: var(--gold); letter-spacing: 0.1em; }
+
+    /* ---------- responsive ---------- */
+    @media (max-width: 1040px) {
+      .cols, .timer-wrap { grid-template-columns: 1fr; }
+      .index-panel { grid-template-columns: 1fr; gap: 14px; }
+    }
+
+    @media (max-width: 880px) {
+      .shell { grid-template-columns: 1fr; border-left: 0; border-right: 0; }
+      .dept {
+        position: sticky;
+        top: 0;
+        height: auto;
+        flex-direction: row;
+        align-items: stretch;
+        overflow-x: auto;
+        border-right: 0;
+        border-bottom: 3px solid var(--ink);
+        z-index: 30;
+      }
+      .seal, .nav-label, .dept-foot { display: none; }
+      .nav { flex-direction: row; }
+      .nav-btn {
+        flex-direction: column;
+        gap: 2px;
+        border-left: 0;
+        border-bottom: 4px solid transparent;
+        padding: 9px 13px;
+        white-space: nowrap;
+      }
+      .nav-btn.active { border-left-color: transparent; border-bottom-color: var(--brand); }
+      .nav-btn .nm { font-size: 13px; }
+      .crumb { top: 0; }
+      .dept-head { padding: 20px 16px 16px; }
+      .pad { padding: 18px 16px; }
+      .crumb { padding: 10px 16px; }
+      .colophon { padding: 11px 16px; }
+      .ledger, .ledger tbody, .ledger tr, .ledger td { display: block; width: 100%; }
+      .ledger thead { display: none; }
+      .ledger tr { border-bottom: 2px solid var(--line); padding: 6px 0; }
+      .ledger td { border-bottom: 0; padding: 5px 14px; }
+      .ledger .act { text-align: left; }
+      .reg .nm { width: 100%; }
+      .del { opacity: 1; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      * { transition-duration: .01ms !important; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="banner">
+    <div class="banner-in">
+      <svg class="crest" viewBox="0 0 32 40" aria-hidden="true">
+        <path d="M16 1l14 6v11c0 9.5-6.4 15.9-14 18C8.4 33.9 2 27.5 2 18V7z" fill="#fff"/>
+        <path d="M16 9l2.2 4.6 5 .7-3.6 3.5.9 5L16 20.4l-4.5 2.4.9-5-3.6-3.5 5-.7z" fill="#1a4fd6"/>
+      </svg>
+      <span class="go">Government of One</span>
+      <span class="banner-note">An official portal of the Government of One</span>
+      <span class="spacer"></span>
+      <span class="banner-date" id="bannerDate">—</span>
+    </div>
+  </div>
+
+  <div class="shell">
+    <aside class="dept">
+      <div class="seal">
+        <svg viewBox="0 0 32 40" aria-hidden="true">
+          <path d="M16 1l14 6v11c0 9.5-6.4 15.9-14 18C8.4 33.9 2 27.5 2 18V7z" fill="#0f1a2e"/>
+          <path d="M16 9l2.2 4.6 5 .7-3.6 3.5.9 5L16 20.4l-4.5 2.4.9-5-3.6-3.5 5-.7z" fill="#fff"/>
+        </svg>
+        <div>
+          <div class="s1">Office of the Citizen</div>
+          <div class="s2">Unified life management</div>
+        </div>
+      </div>
+
+      <div class="nav-label">Departments</div>
+      <nav class="nav" id="nav">
+        <button class="nav-btn active" data-view="briefing"><span class="code">00</span><span class="nm">Daily Briefing</span></button>
+        <button class="nav-btn" data-view="finance"><span class="code">10</span><span class="nm">Department of Finance</span></button>
+        <button class="nav-btn" data-view="metrics"><span class="code">20</span><span class="nm">Department of Metrics</span></button>
+        <button class="nav-btn" data-view="directives"><span class="code">30</span><span class="nm">Bureau of Operations</span></button>
+        <button class="nav-btn" data-view="habits"><span class="code">40</span><span class="nm">Habit Compliance</span></button>
+        <button class="nav-btn" data-view="plan"><span class="code">50</span><span class="nm">Planning Commission</span></button>
+        <button class="nav-btn" data-view="records"><span class="code">60</span><span class="nm">Office of Records</span></button>
+        <button class="nav-btn" data-view="attention"><span class="code">70</span><span class="nm">Attention Authority</span></button>
+      </nav>
+
+      <div class="dept-foot">
+        <div class="meta">
+          portal <b>govone 1.0.0</b><br />
+          schema <b>gov.v1</b><br />
+          <span style="color:var(--green)">●</span> local-only · no account
+        </div>
+        <button class="btn ghost tiny" id="exportBtn">Export register (.json)</button>
+        <button class="btn ghost tiny" id="resetBtn">Reset all records</button>
+      </div>
+    </aside>
+
+    <main>
+      <div class="crumb" id="crumb"></div>
+      <div class="view" id="view"></div>
+      <footer class="colophon" id="colophon"></footer>
+    </main>
+  </div>
+
+  <div id="toast" role="status" aria-live="polite"></div>
+
+  <script>
+  (function () {
+    "use strict";
+
+    /* ============ utilities ============ */
+    var KEY = "gov.v1";
+    var $ = function (s, r) { return (r || document).querySelector(s); };
+    var $$ = function (s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); };
+
+    function iso(d) {
+      d = d || new Date();
+      var z = new Date(d.getTime() - d.getTimezoneOffset() * 60000);
+      return z.toISOString().slice(0, 10);
+    }
+    function addDays(d, n) { var x = new Date(d); x.setDate(x.getDate() + n); return x; }
+    function daysBack(n) { return iso(addDays(new Date(), -n)); }
+    function uid() { return Math.random().toString(36).slice(2, 9) + Date.now().toString(36).slice(-4); }
+    function esc(s) {
+      return String(s).replace(/[&<>"']/g, function (c) {
+        return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c];
+      });
+    }
+    function clamp(n, a, b) { return n === n ? Math.max(a, Math.min(b, n)) : a; }
+    function pad(n, w) { return String(n).padStart(w || 4, "0"); }
+    function money(n) {
+      var s = "$" + Math.abs(Math.round(n)).toLocaleString("en-US");
+      return (n < 0 ? "−" : "") + s;
+    }
+    function dateLabel(d) {
+      var days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+      var mon = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+      return days[d.getDay()] + ", " + d.getDate() + " " + mon[d.getMonth()] + " " + d.getFullYear();
+    }
+    function shortDate(ts) {
+      var d = new Date(ts);
+      var mon = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+      return pad(d.getDate(), 2) + " " + mon[d.getMonth()] + " " + d.getFullYear();
+    }
+
+    var PRIORITIES = { high: "high", normal: "normal", low: "low" };
+    var CATEGORIES = ["Housing", "Food", "Transport", "Utilities", "Health", "Income", "Savings", "Other"];
+    var HABIT_COLORS = ["#1a4fd6", "#0f8a4e", "#b26a05", "#6a3fc0", "#0a7f96", "#c62828"];
+
+    /* ============ seed ============ */
+    function seed() {
+      var Y = new Date().getFullYear();
+      function r(code, n) { return code + "-" + Y + "-" + pad(n); }
+      var t = Date.now();
+      var d = {}, d2 = {};
+      for (var i = 1; i <= 13; i++) d[daysBack(i)] = true;
+      for (var j = 1; j <= 6; j++) if (j % 2 === 0) d2[daysBack(j)] = true;
+
+      return {
+        finance: [
+          { id: uid(), ref: r("DFIN", 1), title: "Monthly salary", amount: 4200, kind: "revenue", category: "Income", status: "passed", ts: t - 12 * 864e5, passedTs: t - 12 * 864e5 },
+          { id: uid(), ref: r("DFIN", 2), title: "Rent — flat 4B", amount: 1400, kind: "appropriation", category: "Housing", status: "passed", ts: t - 11 * 864e5, passedTs: t - 11 * 864e5 },
+          { id: uid(), ref: r("DFIN", 3), title: "Groceries and household", amount: 420, kind: "appropriation", category: "Food", status: "passed", ts: t - 8 * 864e5, passedTs: t - 8 * 864e5 },
+          { id: uid(), ref: r("DFIN", 4), title: "Index fund transfer", amount: 600, kind: "appropriation", category: "Savings", status: "issued", ts: t - 3 * 864e5, passedTs: 0 },
+          { id: uid(), ref: r("DFIN", 5), title: "Freelance invoice 41", amount: 750, kind: "revenue", category: "Income", status: "issued", ts: t - 2 * 864e5, passedTs: 0 },
+          { id: uid(), ref: r("DFIN", 6), title: "Electricity bill", amount: 95, kind: "appropriation", category: "Utilities", status: "passed", ts: t - 5 * 864e5, passedTs: t - 5 * 864e5 },
+          { id: uid(), ref: r("DFIN", 7), title: "Gym membership (cancelled)", amount: 45, kind: "appropriation", category: "Health", status: "withdrawn", ts: t - 6 * 864e5, passedTs: 0 }
+        ],
+        seqs: { DFIN: 7, DOPS: 4, DOCR: 2 },
+        directives: [
+          { id: uid(), ref: r("DOPS", 1), text: "Submit the quarterly tax declaration", prio: "high", done: false, ts: t - 4 * 864e5 },
+          { id: uid(), ref: r("DOPS", 2), text: "Renew passport before expiry", prio: "high", done: false, ts: t - 3 * 864e5 },
+          { id: uid(), ref: r("DOPS", 3), text: "File insurance claim for the laptop", prio: "normal", done: false, ts: t - 2 * 864e5 },
+          { id: uid(), ref: r("DOPS", 4), text: "Reply to Mira about the lease", prio: "normal", done: true, ts: t - 1 * 864e5 }
+        ],
+        habits: [
+          { id: uid(), name: "Read 20 pages", days: d, color: HABIT_COLORS[1] },
+          { id: uid(), name: "Move for 30 minutes", days: d2, color: HABIT_COLORS[0] },
+          { id: uid(), name: "Lights out before 23:00", days: {}, color: HABIT_COLORS[2] }
+        ],
+        plan: [
+          { id: uid(), title: "Emergency fund", current: 2400, target: 6000, unit: "$" },
+          { id: uid(), title: "Run 100 km this month", current: 42, target: 100, unit: "km" },
+          { id: uid(), title: "Read 24 books this year", current: 9, target: 24, unit: "books" }
+        ],
+        records: [
+          { id: uid(), ref: r("DOCR", 1), text: "Standing item: weekly review every Sunday, 20 minutes. Clear the inbox, set the top three directives, reset the compliance register.", ts: t - 864e5 },
+          { id: uid(), ref: r("DOCR", 2), text: "Landlord confirmed the deposit return window opens on the 1st. Photograph the flat before handover.", ts: t - 3 * 864e5 }
+        ],
+        attention: { date: iso(), sessions: 2, minutes: 50 },
+        metrics: {
+          history: (function () {
+            var h = {};
+            var vals = [52, 55, 58, 54, 61, 63];
+            for (var k = 0; k < vals.length; k++) h[daysBack(vals.length - k)] = vals[k];
+            return h;
+          })()
+        }
+      };
+    }
+
+    /* ============ normalisation ============ */
+    function normalize(s) {
+      if (!s || typeof s !== "object" || Array.isArray(s)) return seed();
+      var known = ["finance", "directives", "habits", "plan", "records", "attention", "metrics", "seqs", "finance"].some(function (k) {
+        return Object.prototype.hasOwnProperty.call(s, k);
+      });
+      if (!known) return seed();
+
+      var asText = function (v) {
+        if (typeof v === "string") return v;
+        if (v === null || typeof v === "undefined") return "";
+        return String(v);
+      };
+      var asId = function (v) { return typeof v === "string" && v ? v : uid(); };
+      var asTime = function (v) { return typeof v === "number" && isFinite(v) ? v : Date.now(); };
+      var asNum = function (v) { return typeof v === "number" && isFinite(v) && v >= 0 ? v : 0; };
+
+      var out = {};
+      out.seqs = {};
+      ["DFIN", "DOPS", "DOCR"].forEach(function (c) {
+        var v = s.seqs && s.seqs[c];
+        out.seqs[c] = typeof v === "number" && isFinite(v) && v >= 0 ? Math.floor(v) : 0;
+      });
+
+      out.finance = (Array.isArray(s.finance) ? s.finance : []).map(function (f) {
+        f = f && typeof f === "object" ? f : {};
+        return {
+          id: asId(f.id),
+          ref: asText(f.ref) || "DFIN-0000-0000",
+          title: asText(f.title),
+          amount: asNum(f.amount),
+          kind: f.kind === "appropriation" ? "appropriation" : "revenue",
+          category: CATEGORIES.indexOf(asText(f.category)) >= 0 ? asText(f.category) : "Other",
+          status: f.status === "passed" ? "passed" : (f.status === "withdrawn" ? "withdrawn" : "issued"),
+          ts: asTime(f.ts),
+          passedTs: typeof f.passedTs === "number" && isFinite(f.passedTs) ? f.passedTs : 0
+        };
+      }).filter(function (f) { return f.title.trim() !== ""; });
+
+      out.directives = (Array.isArray(s.directives) ? s.directives : []).map(function (d) {
+        d = d && typeof d === "object" ? d : {};
+        return {
+          id: asId(d.id),
+          ref: asText(d.ref) || "DOPS-0000-0000",
+          text: asText(d.text),
+          prio: PRIORITIES[d.prio] ? d.prio : "normal",
+          done: !!d.done,
+          ts: asTime(d.ts)
+        };
+      }).filter(function (d) { return d.text.trim() !== ""; });
+
+      out.habits = (Array.isArray(s.habits) ? s.habits : []).map(function (h) {
+        h = h && typeof h === "object" ? h : {};
+        var days = {};
+        if (h.days && typeof h.days === "object" && !Array.isArray(h.days)) {
+          Object.keys(h.days).forEach(function (k) { if (h.days[k]) days[k] = true; });
+        }
+        return {
+          id: asId(h.id),
+          name: asText(h.name),
+          days: days,
+          color: typeof h.color === "string" && h.color ? h.color : HABIT_COLORS[0]
+        };
+      }).filter(function (h) { return h.name.trim() !== ""; });
+
+      out.plan = (Array.isArray(s.plan) ? s.plan : []).map(function (g) {
+        g = g && typeof g === "object" ? g : {};
+        return {
+          id: asId(g.id),
+          title: asText(g.title),
+          current: asNum(g.current),
+          target: asNum(g.target),
+          unit: asText(g.unit)
+        };
+      }).filter(function (g) { return g.title.trim() !== ""; });
+
+      out.records = (Array.isArray(s.records) ? s.records : []).map(function (n) {
+        n = n && typeof n === "object" ? n : {};
+        return { id: asId(n.id), ref: asText(n.ref) || "DOCR-0000-0000", text: asText(n.text), ts: asTime(n.ts) };
+      }).filter(function (n) { return n.text.trim() !== ""; });
+
+      var a = s.attention && typeof s.attention === "object" && !Array.isArray(s.attention) ? s.attention : {};
+      out.attention = {
+        date: typeof a.date === "string" && a.date ? a.date : iso(),
+        sessions: typeof a.sessions === "number" && isFinite(a.sessions) && a.sessions > 0 ? Math.floor(a.sessions) : 0,
+        minutes: typeof a.minutes === "number" && isFinite(a.minutes) && a.minutes > 0 ? Math.floor(a.minutes) : 0
+      };
+
+      var m = s.metrics && typeof s.metrics === "object" && !Array.isArray(s.metrics) ? s.metrics : {};
+      var hist = {};
+      if (m.history && typeof m.history === "object" && !Array.isArray(m.history)) {
+        Object.keys(m.history).forEach(function (k) {
+          var v = m.history[k];
+          if (/^\d{4}-\d{2}-\d{2}$/.test(k) && typeof v === "number" && isFinite(v)) hist[k] = clamp(Math.round(v), 0, 100);
+        });
+      }
+      out.metrics = { history: hist };
+
+      return out;
+    }
+
+    function load() {
+      try {
+        var raw = localStorage.getItem(KEY);
+        if (!raw) return seed();
+        return normalize(JSON.parse(raw));
+      } catch (e) { return seed(); }
+    }
+
+    var S = load();
+    var view = "briefing";
+    var dirFilter = "all";
+    var ledgerFilter = "all";
+
+    function save() {
+      try {
+        S = normalize(S);
+        snapshotIndex();
+        localStorage.setItem(KEY, JSON.stringify(S));
+      } catch (e) {}
+      colophon();
+    }
+
+    /* ============ references ============ */
+    function newRef(code) {
+      S.seqs[code] = (S.seqs[code] || 0) + 1;
+      return code + "-" + new Date().getFullYear() + "-" + pad(S.seqs[code]);
+    }
+
+    /* ============ finance computations ============ */
+    function passedSum(kind) {
+      return S.finance.reduce(function (a, f) {
+        return a + (f.status === "passed" && f.kind === kind ? f.amount : 0);
+      }, 0);
+    }
+    function financeTotals() {
+      var rev = passedSum("revenue");
+      var exp = passedSum("appropriation");
+      var issued = S.finance.filter(function (f) { return f.status === "issued"; });
+      return {
+        rev: rev,
+        exp: exp,
+        balance: rev - exp,
+        issuedCount: issued.length,
+        issuedAmount: issued.reduce(function (a, f) { return a + f.amount; }, 0),
+        passedCount: S.finance.filter(function (f) { return f.status === "passed"; }).length,
+        voidCount: S.finance.filter(function (f) { return f.status === "withdrawn"; }).length
+      };
+    }
+
+    /* ============ metrics ============ */
+    function gradeOf(ratio) {
+      if (ratio === null) return { grade: "—", tone: "neutral", label: "No data", assessment: "NO DATA RETURNED" };
+      if (ratio >= 1.15) return { grade: "A+", tone: "ok", label: "Excellent", assessment: "COMPLIANT — EXEMPLARY" };
+      if (ratio >= 1) return { grade: "A", tone: "ok", label: "Good", assessment: "COMPLIANT" };
+      if (ratio >= 0.85) return { grade: "B", tone: "info", label: "Satisfactory", assessment: "SATISFACTORY" };
+      if (ratio >= 0.65) return { grade: "C", tone: "warn", label: "Adequate", assessment: "NEEDS REVIEW" };
+      if (ratio >= 0.45) return { grade: "D", tone: "warn", label: "Weak", assessment: "NEEDS REVIEW" };
+      return { grade: "F", tone: "crit", label: "Critical", assessment: "CRITICAL — ACTION REQUIRED" };
+    }
+
+    function metricsData() {
+      var out = [];
+
+      var total = S.directives.length;
+      var done = S.directives.filter(function (d) { return d.done; }).length;
+      out.push({
+        code: "MTR-01", dept: "Bureau of Operations", name: "Directive completion",
+        color: "var(--red)",
+        value: total ? Math.round(done / total * 100) + "%" : "—",
+        target: "target 80% of directives executed",
+        ratio: total ? (done / total) / 0.8 : null,
+        hasData: total > 0
+      });
+
+      var hits = 0, slots = 0;
+      for (var i = 0; i < 7; i++) {
+        var k = daysBack(i);
+        S.habits.forEach(function (h) { slots++; if (h.days[k]) hits++; });
+      }
+      var hRatio = slots ? hits / slots : null;
+      out.push({
+        code: "MTR-02", dept: "Habit Compliance", name: "Seven-day compliance",
+        color: "var(--teal)",
+        value: slots ? Math.round(hRatio * 100) + "%" : "—",
+        target: "target 70% of registered obligations",
+        ratio: hRatio === null ? null : hRatio / 0.7,
+        hasData: S.habits.length > 0
+      });
+
+      var goals = S.plan.filter(function (g) { return g.target > 0; });
+      var planAvg = goals.length
+        ? goals.reduce(function (a, g) { return a + clamp(g.current / g.target, 0, 1); }, 0) / goals.length
+        : null;
+      out.push({
+        code: "MTR-03", dept: "Planning Commission", name: "Plan progress",
+        color: "var(--violet)",
+        value: goals.length ? Math.round(planAvg * 100) + "%" : "—",
+        target: "target 70% average milestone completion",
+        ratio: planAvg === null ? null : planAvg / 0.7,
+        hasData: goals.length > 0
+      });
+
+      var fin = financeTotals();
+      var fRatio = fin.rev > 0 ? (fin.balance / fin.rev) : null;
+      out.push({
+        code: "MTR-04", dept: "Department of Finance", name: "Treasury balance ratio",
+        color: "var(--green)",
+        value: fin.rev > 0 ? Math.round(fRatio * 100) + "%" : "—",
+        target: "target surplus of 25% of enacted revenue",
+        ratio: fRatio === null ? null : fRatio / 0.25,
+        hasData: fin.rev > 0
+      });
+
+      var att = S.attention;
+      out.push({
+        code: "MTR-05", dept: "Attention Authority", name: "Attention output",
+        color: "var(--gold)",
+        value: att.minutes + " min",
+        target: "target 100 focused minutes per day",
+        ratio: att.minutes / 100,
+        hasData: att.minutes > 0 || att.sessions > 0
+      });
+
+      var week = S.records.filter(function (n) { return n.ts >= Date.now() - 7 * 864e5; }).length;
+      out.push({
+        code: "MTR-06", dept: "Office of Records", name: "Record keeping",
+        color: "var(--brand)",
+        value: week + (week === 1 ? " record" : " records"),
+        target: "target 4 filed records per week",
+        ratio: week / 4,
+        hasData: S.records.length > 0
+      });
+
+      out.forEach(function (m) { m.ratio = m.hasData && m.ratio !== null ? m.ratio : null; m.grade = gradeOf(m.ratio); });
+      return out;
+    }
+
+    function nationalIndex() {
+      var ms = metricsData().filter(function (m) { return m.hasData; });
+      if (!ms.length) return null;
+      var sum = ms.reduce(function (a, m) { return a + clamp(m.ratio, 0, 1); }, 0);
+      return Math.round(sum / ms.length * 100);
+    }
+
+    function snapshotIndex() {
+      var idx = nationalIndex();
+      var h = S.metrics.history;
+      h[iso()] = idx === null ? 0 : idx;
+      var limit = Date.now() - 30 * 864e5;
+      Object.keys(h).forEach(function (k) {
+        var ts = new Date(k + "T00:00:00").getTime();
+        if (ts < limit) delete h[k];
+      });
+    }
+
+    /* ============ state helpers ============ */
+    function streak(days) {
+      var n = 0, d = new Date();
+      if (!days[iso(d)]) d = addDays(d, -1);
+      while (days[iso(d)]) { n++; d = addDays(d, -1); }
+      return n;
+    }
+    function lastDays(n) {
+      var out = [], t = new Date();
+      for (var i = n - 1; i >= 0; i--) out.push(addDays(t, -i));
+      return out;
+    }
+    function rollAttention() {
+      if (S.attention.date !== iso()) {
+        S.attention = { date: iso(), sessions: 0, minutes: 0 };
+        save();
+      }
+    }
+    rollAttention();
+
+    /* ============ toast / clock / colophon ============ */
+    var toastT;
+    function toast(msg) {
+      var el = $("#toast");
+      el.innerHTML = '<span class="lbl">NOTICE</span> ' + esc(msg);
+      el.classList.add("show");
+      clearTimeout(toastT);
+      toastT = setTimeout(function () { el.classList.remove("show"); }, 2200);
+    }
+
+    function tickBanner() {
+      var d = new Date();
+      var p = function (n) { return String(n).padStart(2, "0"); };
+      $("#bannerDate").textContent = dateLabel(d) + " · " + p(d.getHours()) + ":" + p(d.getMinutes()) + ":" + p(d.getSeconds());
+    }
+    tickBanner(); setInterval(tickBanner, 1000);
+
+    function colophon() {
+      var openDir = S.directives.filter(function (d) { return !d.done; }).length;
+      var pending = S.finance.filter(function (f) { return f.status === "issued"; }).length;
+      var hit = S.habits.filter(function (h) { return h.days[iso()]; }).length;
+      $("#colophon").innerHTML =
+        '<span class="ok">govone 1.0.0</span><span class="sep">│</span>' +
+        '<span>schema gov.v1 · local storage only</span><span class="sep">│</span>' +
+        '<span><b>' + openDir + '</b> directives pending</span><span class="sep">│</span>' +
+        '<span><b>' + pending + '</b> instruments awaiting assent</span><span class="sep">│</span>' +
+        '<span><b>' + hit + '/' + S.habits.length + '</b> compliance logged today</span><span class="sep">│</span>' +
+        '<span>press <b>1–8</b> to change department</span>';
+    }
+
+    /* ============ shared fragments ============ */
+    function deptHead(code, num, title, sub, ref) {
+      return '<div class="dept-head">' +
+        '<div>' +
+          '<div class="kicker">Department ' + num + ' · ' + code + '</div>' +
+          '<h1>' + esc(title) + '</h1>' +
+          '<p class="sub">' + esc(sub) + '</p>' +
+        '</div>' +
+        '<div class="ref">REF: ' + esc(ref) + '</div>' +
+      '</div>';
+    }
+    function doc(label, meta, body, flush) {
+      return '<div class="doc">' +
+        '<div class="doc-head"><h2>' + esc(label) + '</h2>' +
+        (meta ? '<span class="meta">' + esc(meta) + '</span>' : '') + '</div>' +
+        '<div class="doc-body' + (flush ? " flush" : "") + '">' + (body == null ? "" : body) + '</div>' +
+      '</div>';
+    }
+    function stat(k, v, h, c, small) {
+      return '<div class="stat" style="--c:' + c + '">' +
+        '<div class="k">' + esc(k) + '</div>' +
+        '<div class="v">' + v + (small ? '<small>' + esc(small) + '</small>' : '') + '</div>' +
+        '<div class="h">' + h + '</div></div>';
+    }
+    function chip(label, tone) { return '<span class="chip ' + tone + '">' + esc(label) + '</span>'; }
+    function emptyBox(msg) { return '<div class="empty">' + esc(msg) + '</div>'; }
+
+    /* ============ views ============ */
+    var views = {};
+
+    views.briefing = function () {
+      var fin = financeTotals();
+      var idx = nationalIndex();
+      var g = gradeOf(idx === null ? null : idx / 100);
+      var open = S.directives.filter(function (d) { return !d.done; }).length;
+      var hit = S.habits.filter(function (h) { return h.days[iso()]; }).length;
+      var goals = S.plan.filter(function (x) { return x.target > 0; });
+      var planPct = goals.length
+        ? Math.round(goals.reduce(function (a, x) { return a + clamp(x.current / x.target, 0, 1); }, 0) / goals.length * 100)
+        : 0;
+      var top = S.directives.filter(function (d) { return !d.done; })
+        .sort(function (a, b) {
+          var w = { high: 0, normal: 1, low: 2 };
+          return w[a.prio] - w[b.prio] || b.ts - a.ts;
+        }).slice(0, 5);
+      var recent = S.records.slice().sort(function (a, b) { return b.ts - a.ts; }).slice(0, 3);
+
+      return deptHead("HOM", "00", "Daily Briefing",
+        "Consolidated position across all departments of the Government of One, as at " + dateLabel(new Date()) + ".",
+        "HM-" + iso() + "/BRIEF") +
+
+        '<div class="pad">' +
+          '<div class="stats">' +
+            stat("National index", idx === null ? "—" : idx, idx === null ? "no data filed yet" : g.assessment, idx === null ? "var(--muted)" : (idx >= 75 ? "var(--green)" : idx >= 50 ? "var(--brand)" : "var(--amber)")) +
+            stat("Directives pending", open, S.directives.length + " on the register", "var(--red)") +
+            stat("Compliance today", hit + "<small>/" + S.habits.length + "</small>", "registered obligations logged", "var(--teal)") +
+            stat("Plan progress", planPct, "% average milestone completion", "var(--violet)") +
+            stat("Treasury balance", money(fin.balance), fin.balance >= 0 ? "surplus enacted" : "deficit enacted", fin.balance >= 0 ? "var(--green)" : "var(--red)") +
+            stat("Attention output", S.attention.minutes, "focused minutes today", "var(--gold)", "min") +
+          '</div>' +
+
+          '<div class="notice">' +
+            '<div class="lbl">Official notice</div>' +
+            '<p>All figures are computed on this device from your own registers. No record leaves this browser: there is no account, no server and no third party.</p>' +
+          '</div>' +
+
+          '<div class="cols">' +
+            '<div>' +
+              doc("Priority directives", open + " pending", top.length
+                ? '<div class="stack">' + top.map(function (d) {
+                    return '<div class="row" data-id="' + d.id + '">' +
+                      chip(d.prio, d.prio === "high" ? "high" : d.prio === "normal" ? "normal" : "low") +
+                      '<div class="body"><div class="t">' + esc(d.text) + '</div>' +
+                      '<div class="m"><span>' + d.ref + '</span><span>' + shortDate(d.ts) + '</span></div></div>' +
+                      '<button class="btn sm ok" data-act="complete-directive" data-id="' + d.id + '">Execute</button>' +
+                      '<button class="del" data-act="del-directive" data-id="' + d.id + '" title="Strike from register">×</button>' +
+                    '</div>';
+                  }).join("") + '</div>'
+                : emptyBox("No pending directives — the register is clear.")) +
+
+              doc("Compliance register · today", hit + " of " + S.habits.length + " logged",
+                S.habits.length
+                  ? '<div class="stack">' + S.habits.slice(0, 5).map(function (h) {
+                      var on = !!h.days[iso()];
+                      return '<div class="row">' +
+                        '<button class="day' + (on ? " on" : "") + ' today" data-act="toggle-habit" data-id="' + h.id + '" data-day="' + iso() + '" style="--c:' + h.color + '" title="' + esc(h.name) + '"></button>' +
+                        '<div class="body"><div class="t">' + esc(h.name) + '</div>' +
+                        '<div class="m"><span>unbroken record: <b>' + streak(h.days) + ' day(s)</b></span></div></div>' +
+                        (on ? chip("logged", "completed") : chip("due", "pending")) +
+                      '</div>';
+                    }).join("") + '</div>'
+                  : emptyBox("No obligations registered.")) +
+            '</div>' +
+
+            '<div>' +
+              doc("Department directory", "8 departments",
+                '<div class="stack dir-list">' +
+                  [["10", "finance", "DFIN", "Issue, examine and pass financial instruments"],
+                   ["20", "metrics", "DMTR", "Assessment of national performance indicators"],
+                   ["30", "directives", "DOPS", "Register and execute operational directives"],
+                   ["40", "habits", "DHAB", "Daily compliance of registered obligations"],
+                   ["50", "plan", "DPLN", "Milestones commissioned by the Planning Commission"],
+                   ["60", "records", "DOCR", "Filing of official records and notes"],
+                   ["70", "attention", "DAAT", "Sittings of focused, undivided attention"]
+                  ].map(function (d) {
+                    return '<div class="row" data-goto="' + d[1] + '">' +
+                      '<span class="code">' + d[0] + '</span>' +
+                      '<div class="body"><div class="t">' + d[2] + '</div>' +
+                      '<div class="m"><span>' + esc(d[3]) + '</span></div></div>' +
+                    '</div>';
+                  }).join("") +
+                '</div>', true) +
+
+              doc("Latest records", S.records.length + " filed",
+                recent.length
+                  ? '<div class="stack">' + recent.map(function (n) {
+                      return '<div class="row"><div class="body">' +
+                        '<div class="t" style="font-weight:500;font-size:14px">' + esc(n.text.length > 120 ? n.text.slice(0, 120) + "…" : n.text) + '</div>' +
+                        '<div class="m"><span>' + n.ref + '</span><span>' + shortDate(n.ts) + '</span></div>' +
+                      '</div></div>';
+                    }).join("") + '</div>'
+                  : emptyBox("No records filed.")) +
+            '</div>' +
+          '</div>' +
+        '</div>';
+    };
+
+    views.finance = function () {
+      var fin = financeTotals();
+      var rows = S.finance.slice().sort(function (a, b) { return b.ts - a.ts; });
+      if (ledgerFilter !== "all") rows = rows.filter(function (f) { return f.status === ledgerFilter; });
+
+      var byCat = {};
+      S.finance.forEach(function (f) {
+        if (f.status === "passed" && f.kind === "appropriation") byCat[f.category] = (byCat[f.category] || 0) + f.amount;
+      });
+      var cats = Object.keys(byCat).sort(function (a, b) { return byCat[b] - byCat[a]; });
+      var maxCat = cats.length ? byCat[cats[0]] : 1;
+      var catTotal = cats.reduce(function (a, k) { return a + byCat[k]; }, 0);
+
+      var table = rows.length
+        ? '<table class="ledger"><thead><tr>' +
+            '<th>Reference</th><th>Issued</th><th>Instrument</th><th style="text-align:right">Amount</th><th>Status</th><th style="text-align:right">Action</th>' +
+          '</tr></thead><tbody>' +
+          rows.map(function (f) {
+            var sign = f.kind === "revenue" ? "+" : "−";
+            var act = "";
+            if (f.status === "issued") {
+              act = '<button class="btn sm ok" data-act="pass-finance" data-id="' + f.id + '">Pass</button>' +
+                    '<button class="btn sm warn" data-act="void-finance" data-id="' + f.id + '">Void</button>';
+            } else if (f.status === "passed") {
+              act = '<button class="btn sm ghost" data-act="recall-finance" data-id="' + f.id + '">Recall</button>';
+            } else {
+              act = '<button class="btn sm ghost" data-act="reinstate-finance" data-id="' + f.id + '">Reinstate</button>';
+            }
+            return '<tr>' +
+              '<td class="ref">' + f.ref + '</td>' +
+              '<td class="dt">' + shortDate(f.ts) + '</td>' +
+              '<td><div class="ttl">' + esc(f.title) + '</div><div class="cat">' + esc(f.category) + ' · ' + (f.kind === "revenue" ? "revenue" : "appropriation") + '</div></td>' +
+              '<td class="amt ' + (f.kind === "revenue" ? "pos" : "neg") + '">' + sign + ' ' + money(f.amount) + '</td>' +
+              '<td><span class="chip ' + f.status + '">' + f.status + '</span>' +
+                (f.status === "passed" ? '<span class="stamp">Passed</span>' : '') + '</td>' +
+              '<td class="act">' + act +
+                '<button class="del" data-act="del-finance" data-id="' + f.id + '" title="Expunge record" style="opacity:1">×</button>' +
+              '</td>' +
+            '</tr>';
+          }).join("") +
+          '</tbody></table>'
+        : emptyBox("No instruments on the ledger under this filter.");
+
+      return deptHead("DFIN", "10", "Department of Finance",
+        "Financial instruments are issued here, examined by the department, and passed into force. Only passed instruments count toward the treasury balance.",
+        "DFIN/" + new Date().getFullYear() + "/" + pad(S.finance.length + 1)) +
+
+        '<div class="pad">' +
+          '<div class="stats">' +
+            stat("Revenue enacted", money(fin.rev), fin.passedCount + " instruments passed", "var(--green)") +
+            stat("Expenditure enacted", money(fin.exp), "appropriations in force", "var(--amber)") +
+            stat("Treasury balance", money(fin.balance), fin.balance >= 0 ? "surplus" : "deficit", fin.balance >= 0 ? "var(--green)" : "var(--red)") +
+            stat("Awaiting assent", money(fin.issuedAmount), fin.issuedCount + " issued, not yet passed", "var(--brand)") +
+          '</div>' +
+
+          doc("Issue a financial instrument", "step 1 of 2",
+            '<form id="financeForm" class="form-row">' +
+              '<input class="field grow" id="finTitle" placeholder="Description of the instrument" autocomplete="off" maxlength="90" />' +
+              '<input class="field w90" id="finAmount" type="number" min="0" step="1" placeholder="Amount" />' +
+              '<select class="field w140" id="finKind">' +
+                '<option value="revenue">Revenue (income)</option>' +
+                '<option value="appropriation">Appropriation (spending)</option>' +
+              '</select>' +
+              '<select class="field w140" id="finCat">' +
+                CATEGORIES.map(function (c) { return '<option value="' + c + '">' + c + '</option>'; }).join("") +
+              '</select>' +
+              '<button class="btn" type="submit">Issue</button>' +
+            '</form>') +
+
+          doc("Ledger of instruments", S.finance.length + " records · " + fin.passedCount + " passed",
+            '<div style="padding:12px 14px;border-bottom:1px solid var(--line)">' +
+              '<div class="seg" id="ledgerSeg">' +
+                '<button data-lfilter="all" class="' + (ledgerFilter === "all" ? "on" : "") + '">All</button>' +
+                '<button data-lfilter="issued" class="' + (ledgerFilter === "issued" ? "on" : "") + '">Issued</button>' +
+                '<button data-lfilter="passed" class="' + (ledgerFilter === "passed" ? "on" : "") + '">Passed</button>' +
+                '<button data-lfilter="withdrawn" class="' + (ledgerFilter === "withdrawn" ? "on" : "") + '">Void</button>' +
+              '</div>' +
+            '</div>' + table, true) +
+
+          doc("Appropriation by category", "passed only · " + money(catTotal),
+            cats.length
+              ? cats.map(function (c) {
+                  return '<div class="cat-row">' +
+                    '<span class="lbl">' + esc(c) + '</span>' +
+                    '<span class="bar"><i style="width:' + Math.round(byCat[c] / maxCat * 100) + '%;--c:var(--brand)"></i></span>' +
+                    '<span class="val">' + money(byCat[c]) + '</span>' +
+                  '</div>';
+                }).join("")
+              : emptyBox("No appropriations have been passed.")) +
+
+          '<div class="notice">' +
+            '<div class="lbl">Standing order</div>' +
+            '<p>An instrument takes effect only when passed. Voided instruments remain on the ledger for audit but are excluded from every figure on this portal.</p>' +
+          '</div>' +
+        '</div>';
+    };
+
+    views.metrics = function () {
+      var idx = nationalIndex();
+      var g = gradeOf(idx === null ? null : idx / 100);
+      var ms = metricsData();
+
+      var hist = "";
+      for (var i = 6; i >= 0; i--) {
+        var k = daysBack(i);
+        var v = S.metrics.history[k];
+        var isToday = k === iso();
+        hist += '<div class="col' + (isToday ? " today" : "") + '" title="' + k + '">' +
+          '<span class="n">' + (v === undefined ? "—" : v) + '</span>' +
+          '<span class="b" style="height:' + (v === undefined ? 3 : Math.max(3, v)) + '%"></span>' +
+          '<span class="n">' + ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"][new Date(k + "T00:00:00").getDay()] + '</span>' +
+        '</div>';
+      }
+
+      return deptHead("DMTR", "20", "Department of Metrics",
+        "The department calculates each indicator from your registers, compares it against target, and issues an assessment. Grades: A+ ≥115%, A ≥100%, B ≥85%, C ≥65%, D ≥45%, F below.",
+        "DMTR/" + iso() + "/ASSESS") +
+
+        '<div class="pad">' +
+          '<div class="index-panel">' +
+            '<div>' +
+              '<div class="il">National index</div>' +
+              '<div class="big">' + (idx === null ? "—" : idx) + '<small>/100</small></div>' +
+            '</div>' +
+            '<div>' +
+              '<div class="il">Composite assessment of six indicators</div>' +
+              '<div class="gauge"><i style="width:' + (idx === null ? 0 : idx) + '%"></i></div>' +
+              '<div class="irow">' +
+                chip(g.assessment, g.tone) +
+                chip("grade " + g.grade, "neutral") +
+                '<span class="note">Assessed on ' + dateLabel(new Date()) + ' · method: mean of six departmental ratios, capped at target.</span>' +
+              '</div>' +
+            '</div>' +
+          '</div>' +
+
+          '<div class="mcards">' +
+            ms.map(function (m) {
+              var pct = m.hasData ? Math.round(clamp(m.ratio, 0, 1) * 100) : 0;
+              return '<div class="mcard" style="--c:' + m.color + '">' +
+                '<div class="mtop">' +
+                  '<div><div class="mcode">' + m.code + ' · ' + esc(m.dept) + '</div>' +
+                  '<div class="mname">' + esc(m.name) + '</div></div>' +
+                  '<div class="grade">' + m.grade.grade + '</div>' +
+                '</div>' +
+                '<div class="mval">' + esc(m.value) + ' <span>· ' + esc(m.target) + '</span></div>' +
+                '<span class="bar"><i style="width:' + pct + '%"></i></span>' +
+                '<div class="mfoot">' + chip(m.grade.assessment, m.grade.tone) + '</div>' +
+              '</div>';
+            }).join("") +
+          '</div>' +
+
+          doc("Seven-day index history", "recorded on each transaction",
+            '<div class="hist">' + hist + '</div>') +
+
+          '<div class="notice">' +
+            '<div class="lbl">Methodology</div>' +
+            '<p>Each ratio is the observed value divided by the published target. The national index is the mean of available ratios capped at 100, expressed out of 100. Indicators with no underlying data are excluded rather than scored as zero.</p>' +
+          '</div>' +
+        '</div>';
+    };
+
+    views.directives = function () {
+      var rows = S.directives.slice().sort(function (a, b) {
+        if (a.done !== b.done) return a.done ? 1 : -1;
+        var w = { high: 0, normal: 1, low: 2 };
+        return w[a.prio] - w[b.prio] || b.ts - a.ts;
+      });
+      if (dirFilter === "pending") rows = rows.filter(function (d) { return !d.done; });
+      if (dirFilter === "executed") rows = rows.filter(function (d) { return d.done; });
+
+      var open = S.directives.filter(function (d) { return !d.done; }).length;
+      var done = S.directives.length - open;
+
+      var body = rows.length
+        ? '<table class="ledger"><thead><tr>' +
+            '<th>Reference</th><th>Priority</th><th>Directive</th><th>Status</th><th style="text-align:right">Action</th>' +
+          '</tr></thead><tbody>' +
+          rows.map(function (d) {
+            return '<tr>' +
+              '<td class="ref">' + d.ref + '</td>' +
+              '<td>' + chip(d.prio, d.prio) + '</td>' +
+              '<td><div class="ttl" style="' + (d.done ? "text-decoration:line-through;color:var(--muted)" : "") + '">' + esc(d.text) + '</div>' +
+                '<div class="cat">issued ' + shortDate(d.ts) + '</div></td>' +
+              '<td><span class="chip ' + (d.done ? "completed" : "pending") + '">' + (d.done ? "executed" : "pending") + '</span></td>' +
+              '<td class="act">' +
+                (d.done
+                  ? '<button class="btn sm ghost" data-act="reopen-directive" data-id="' + d.id + '">Reopen</button>'
+                  : '<button class="btn sm ok" data-act="complete-directive" data-id="' + d.id + '">Execute</button>') +
+                '<button class="del" data-act="del-directive" data-id="' + d.id + '" title="Strike from register" style="opacity:1">×</button>' +
+              '</td>' +
+            '</tr>';
+          }).join("") + '</tbody></table>'
+        : emptyBox("No directives under this filter.");
+
+      return deptHead("DOPS", "30", "Bureau of Operations",
+        "Directives are instructions issued to yourself and executed on your own authority. Priority determines position in the daily briefing.",
+        "DOPS/" + new Date().getFullYear() + "/" + pad(S.directives.length + 1)) +
+
+        '<div class="pad">' +
+          '<div class="stats">' +
+            stat("Pending", open, "awaiting execution", "var(--red)") +
+            stat("Executed", done, "closed directives", "var(--green)") +
+            stat("Completion", (S.directives.length ? Math.round(done / S.directives.length * 100) : 0), "% of register closed", "var(--brand)", "%") +
+            stat("Register size", S.directives.length, "directives on file", "var(--violet)") +
+          '</div>' +
+
+          doc("Issue a new directive", "step 1 of 2",
+            '<form id="directiveForm" class="form-row">' +
+              '<input class="field grow" id="dirInput" placeholder="State the directive" autocomplete="off" maxlength="140" />' +
+              '<select class="field w140" id="dirPrio">' +
+                '<option value="high">High priority</option>' +
+                '<option value="normal" selected>Normal priority</option>' +
+                '<option value="low">Low priority</option>' +
+              '</select>' +
+              '<button class="btn" type="submit">Issue</button>' +
+            '</form>') +
+
+          doc("Register of directives", open + " pending · " + done + " executed",
+            '<div style="padding:12px 14px;border-bottom:1px solid var(--line)">' +
+              '<div class="seg" id="dirSeg">' +
+                '<button data-dfilter="all" class="' + (dirFilter === "all" ? "on" : "") + '">All</button>' +
+                '<button data-dfilter="pending" class="' + (dirFilter === "pending" ? "on" : "") + '">Pending</button>' +
+                '<button data-dfilter="executed" class="' + (dirFilter === "executed" ? "on" : "") + '">Executed</button>' +
+              '</div>' +
+            '</div>' + body, true) +
+        '</div>';
+    };
+
+    views.habits = function () {
+      var days = lastDays(14);
+      var hit = S.habits.filter(function (h) { return h.days[iso()]; }).length;
+      var best = S.habits.reduce(function (m, h) { return Math.max(m, streak(h.days)); }, 0);
+
+      var body = S.habits.length
+        ? S.habits.map(function (h) {
+            var cells = days.map(function (d) {
+              var on = !!h.days[iso(d)];
+              var isToday = iso(d) === iso();
+              return '<button class="day' + (on ? " on" : "") + (isToday ? " today" : "") + '" ' +
+                'data-act="toggle-habit" data-id="' + h.id + '" data-day="' + iso(d) + '" ' +
+                'style="--c:' + h.color + '" title="' + iso(d) + (on ? " · complied" : " · missed") + '"></button>';
+            }).join("");
+            var s = streak(h.days);
+            return '<div class="reg">' +
+              '<div class="nm">' + esc(h.name) +
+                '<span>' + (h.days[iso()] ? "complied today" : "outstanding today") + '</span></div>' +
+              '<div class="days">' + cells + '</div>' +
+              '<div class="streak">' + (s > 0 ? '<b>◆ ' + s + '</b> day record' : "no record") + '</div>' +
+              '<button class="del" data-act="del-habit" data-id="' + h.id + '" style="opacity:1" title="Deregister">×</button>' +
+            '</div>';
+          }).join("")
+        : emptyBox("No obligations registered with this bureau.");
+
+      return deptHead("DHAB", "40", "Habit Compliance",
+        "Registered obligations are assessed daily across the last fourteen sittings. A compliance record is unbroken only if no intervening day is missed.",
+        "DHAB/" + iso() + "/REG") +
+
+        '<div class="pad">' +
+          '<div class="stats">' +
+            stat("Logged today", hit + "<small>/" + S.habits.length + "</small>", "obligations complied", "var(--teal)") +
+            stat("Best record", best, "consecutive days", "var(--gold)", "d") +
+            stat("Registered", S.habits.length, "active obligations", "var(--brand)") +
+            stat("Window", 14, "days under review", "var(--violet)", "d") +
+          '</div>' +
+
+          doc("Register a new obligation", "step 1 of 2",
+            '<form id="habitForm" class="form-row">' +
+              '<input class="field grow" id="habitInput" placeholder="e.g. Stretch for ten minutes" autocomplete="off" maxlength="70" />' +
+              '<button class="btn" type="submit">Register</button>' +
+            '</form>') +
+
+          doc("Compliance register", "last 14 days · click a square to record",
+            body, true) +
+
+          '<div class="notice">' +
+            '<div class="lbl">Assessment rule</div>' +
+            '<p>Today is outlined. Compliance for the seven-day window is reported to the Department of Metrics as MTR-02 each time any record changes.</p>' +
+          '</div>' +
+        '</div>';
+    };
+
+    views.plan = function () {
+      var goals = S.plan;
+      var avg = goals.length
+        ? Math.round(goals.reduce(function (a, g) { return a + (g.target > 0 ? clamp(g.current / g.target, 0, 1) : 0); }, 0) / goals.length * 100)
+        : 0;
+      var complete = goals.filter(function (g) { return g.target > 0 && g.current >= g.target; }).length;
+
+      var body = goals.length
+        ? goals.map(function (g, i) {
+            var pct = g.target > 0 ? clamp(Math.round(g.current / g.target * 100), 0, 100) : 0;
+            var colors = ["var(--brand)", "var(--violet)", "var(--green)", "var(--gold)", "var(--teal)"];
+            var c = colors[i % colors.length];
+            var cur = g.unit === "$" ? money(g.current) : g.current + (g.unit ? " " + g.unit : "");
+            var tgt = g.unit === "$" ? money(g.target) : g.target + (g.unit ? " " + g.unit : "");
+            return '<div class="row" style="--c:' + c + '">' +
+              '<div class="body">' +
+                '<div class="t">' + esc(g.title) + '</div>' +
+                '<div class="m"><span>' + cur + ' of ' + tgt + '</span><span>' + (g.target > 0 ? pct + "% complete" : "no target set") + '</span></div>' +
+                '<span class="bar" style="margin-top:8px;max-width:520px"><i style="width:' + pct + '%"></i></span>' +
+              '</div>' +
+              '<div class="mono" style="font-size:13px;color:var(--muted);width:56px;text-align:right">' + pct + '%</div>' +
+              '<div class="stepper" style="display:flex;gap:6px">' +
+                '<button class="btn sm ghost" data-act="plan-dec" data-id="' + g.id + '" aria-label="Decrease">−</button>' +
+                '<button class="btn sm ghost" data-act="plan-inc" data-id="' + g.id + '" aria-label="Increase">+</button>' +
+                (pct >= 100 ? chip("complete", "passed") : "") +
+                '<button class="del" data-act="del-plan" data-id="' + g.id + '" style="opacity:1" title="Withdraw milestone">×</button>' +
+              '</div>' +
+            '</div>';
+          }).join("")
+        : emptyBox("No milestones commissioned.");
+
+      return deptHead("DPLN", "50", "Planning Commission",
+        "Milestones are commissioned with a target and reviewed at every sitting. Progress reported here feeds indicator MTR-03 of the Department of Metrics.",
+        "DPLN/" + new Date().getFullYear() + "/" + pad(S.plan.length + 1)) +
+
+        '<div class="pad">' +
+          '<div class="stats">' +
+            stat("Milestones", goals.length, "commissioned", "var(--brand)") +
+            stat("Plan progress", avg, "% average completion", "var(--violet)", "%") +
+            stat("Completed", complete, "milestones reached", "var(--green)") +
+            stat("Remaining", goals.length - complete, "milestones in progress", "var(--amber)") +
+          '</div>' +
+
+          doc("Commission a milestone", "step 1 of 2",
+            '<form id="planForm" class="form-row">' +
+              '<input class="field grow" id="planTitle" placeholder="Milestone title" autocomplete="off" maxlength="60" />' +
+              '<input class="field w90" id="planTarget" type="number" min="1" step="1" placeholder="Target" />' +
+              '<input class="field w140" id="planUnit" placeholder="unit (km, $, books)" maxlength="10" />' +
+              '<button class="btn" type="submit">Commission</button>' +
+            '</form>') +
+
+          doc("Register of milestones", avg + "% aggregate progress", body) +
+        '</div>';
+    };
+
+    views.records = function () {
+      var rows = S.records.slice().sort(function (a, b) { return b.ts - a.ts; });
+      var week = S.records.filter(function (n) { return n.ts >= Date.now() - 7 * 864e5; }).length;
+
+      return deptHead("DOCR", "60", "Office of Records",
+        "Records are filed chronologically and retained in full. Anything worth doing twice is worth writing down once.",
+        "DOCR/" + new Date().getFullYear() + "/" + pad(S.records.length + 1)) +
+
+        '<div class="pad">' +
+          '<div class="stats">' +
+            stat("Filed", S.records.length, "records on file", "var(--brand)") +
+            stat("This week", week, "target 4 per week", "var(--teal)") +
+            stat("Newest", rows.length ? shortDate(rows[0].ts) : "—", "last filing", "var(--violet)") +
+            stat("Retention", "100", "% held on device", "var(--green)", "%") +
+          '</div>' +
+
+          doc("File a record", "step 1 of 2",
+            '<form id="recordForm" class="stack" style="gap:10px">' +
+              '<textarea class="field" id="recordInput" rows="3" placeholder="Text of the record" maxlength="2000"></textarea>' +
+              '<div style="display:flex;justify-content:flex-end"><button class="btn" type="submit">File record</button></div>' +
+            '</form>') +
+
+          doc("Register of records", S.records.length + " filed",
+            rows.length
+              ? rows.map(function (n) {
+                  var d = new Date(n.ts);
+                  var p = function (x) { return String(x).padStart(2, "0"); };
+                  return '<div class="row">' +
+                    '<div class="body">' +
+                      '<div class="m" style="margin-bottom:5px"><span style="color:var(--brand)">' + n.ref + '</span>' +
+                        '<span>' + iso(d) + ' · ' + p(d.getHours()) + ':' + p(d.getMinutes()) + '</span></div>' +
+                      '<div style="font-size:14.5px;white-space:pre-wrap;word-break:break-word">' + esc(n.text) + '</div>' +
+                    '</div>' +
+                    '<button class="del" data-act="del-record" data-id="' + n.id + '" style="opacity:1" title="Expunge">×</button>' +
+                  '</div>';
+                }).join("")
+              : emptyBox("No records filed.")) +
+        '</div>';
+    };
+
+    views.attention = function () {
+      var total = T.mode === "work" ? T.len : T.breakLen;
+      var pct = Math.round((1 - T.left / total) * 100);
+      var lit = S.attention.sessions > 0 && S.attention.sessions % 4 === 0 ? 4 : S.attention.sessions % 4;
+      var dots = "";
+      for (var i = 0; i < 4; i++) dots += '<i class="' + (i < lit ? "on" : "") + '"></i>';
+
+      return deptHead("DAAT", "70", "Attention Authority",
+        "Sittings of focused, undivided attention. The Authority sits only when called, rises when the clock expires, and reports every completed sitting to the register.",
+        "DAAT/" + iso() + "/SIT") +
+
+        '<div class="pad">' +
+          '<div class="stats">' +
+            stat("Sittings today", S.attention.sessions, "completed sessions", "var(--green)") +
+            stat("Minutes focused", S.attention.minutes, "target 100 per day", "var(--gold)", "min") +
+            stat("Session length", T.len / 60, "minutes per sitting", "var(--brand)", "min") +
+            stat("Target", 100, "focused minutes", "var(--teal)", "min") +
+          '</div>' +
+
+          '<div class="timer-wrap">' +
+            doc("Sitting clock", T.mode === "work" ? "in session" : "adjourned",
+              '<div class="timer">' +
+                '<div class="mode">' + (T.mode === "work" ? "Sitting in progress" : "Recess") + '</div>' +
+                '<div class="t" id="timeText">' + fmtTime(T.left) + '</div>' +
+                '<span class="gauge"><i id="gaugeFill" style="width:' + pct + '%"></i></span>' +
+                '<div class="dots" id="sessionDots">' + dots + '</div>' +
+                '<div class="timer-ctrl">' +
+                  '<button class="btn" id="startBtn">' + (T.running ? "Rise" : "Call sitting") + '</button>' +
+                  '<button class="btn ghost" id="resetTimer">Reset</button>' +
+                  '<button class="btn ghost" id="skipTimer">Adjourn</button>' +
+                '</div>' +
+                '<div class="seg" id="presetSeg">' +
+                  '<button data-min="25" data-brk="5" class="' + (T.len === 1500 ? "on" : "") + '">25 / 5</button>' +
+                  '<button data-min="50" data-brk="10" class="' + (T.len === 3000 ? "on" : "") + '">50 / 10</button>' +
+                  '<button data-min="15" data-brk="3" class="' + (T.len === 900 ? "on" : "") + '">15 / 3</button>' +
+                '</div>' +
+              '</div>') +
+
+            '<div>' +
+              doc("Standing orders", "four orders",
+                '<div>' +
+                  '<div class="order"><span class="n">01</span><span>Clear the desk. One directive, one sitting — no parallel business.</span></div>' +
+                  '<div class="order"><span class="n">02</span><span>Call the sitting. The clock runs; the Authority does not adjourn early.</span></div>' +
+                  '<div class="order"><span class="n">03</span><span>On expiry the session is entered into the register automatically.</span></div>' +
+                  '<div class="order"><span class="n">04</span><span>Recess is compulsory. Four consecutive sittings warrant a long adjournment.</span></div>' +
+                '</div>') +
+              doc("Report to Metrics", "MTR-05",
+                '<p style="font-size:14px;color:var(--muted)">Focused minutes are reported to the Department of Metrics as indicator MTR-05 against a target of 100 minutes per day. Completed sittings are written to local storage immediately.</p>') +
+            '</div>' +
+          '</div>' +
+        '</div>';
+    };
+
+    /* ============ timer ============ */
+    var T = { mode: "work", len: 25 * 60, breakLen: 5 * 60, left: 25 * 60, running: false, iv: null };
+    var DOC_TITLE = document.title;
+
+    function fmtTime(s) {
+      var m = Math.floor(s / 60), r = s % 60;
+      return String(m).padStart(2, "0") + ":" + String(r).padStart(2, "0");
+    }
+
+    function paintTimer() {
+      document.title = T.running ? fmtTime(T.left) + " · GovOne" : DOC_TITLE;
+      var el = $("#timeText");
+      if (!el) return;
+      var total = T.mode === "work" ? T.len : T.breakLen;
+      el.textContent = fmtTime(T.left);
+      var fill = $("#gaugeFill");
+      if (fill) fill.style.width = Math.round((1 - T.left / total) * 100) + "%";
+      var sb = $("#startBtn");
+      if (sb) sb.textContent = T.running ? "Rise" : "Call sitting";
+    }
+
+    function beep() {
+      try {
+        var Ctx = window.AudioContext || window.webkitAudioContext;
+        if (!Ctx) return;
+        var ac = new Ctx();
+        [0, 0.18, 0.36].forEach(function (t, i) {
+          var o = ac.createOscillator(), g = ac.createGain();
+          o.type = "sine"; o.frequency.value = 587 + i * 196;
+          g.gain.setValueAtTime(0.0001, ac.currentTime + t);
+          g.gain.exponentialRampToValueAtTime(0.13, ac.currentTime + t + 0.02);
+          g.gain.exponentialRampToValueAtTime(0.0001, ac.currentTime + t + 0.22);
+          o.connect(g); g.connect(ac.destination);
+          o.start(ac.currentTime + t); o.stop(ac.currentTime + t + 0.24);
+        });
+        setTimeout(function () { try { ac.close(); } catch (e) {} }, 1200);
+      } catch (e) {}
+    }
+
+    function timerEnd() {
+      clearInterval(T.iv); T.iv = null; T.running = false;
+      beep();
+      if (T.mode === "work") {
+        S.attention.sessions += 1;
+        S.attention.minutes += Math.round(T.len / 60);
+        rollAttention();
+        save();
+        toast("Sitting completed — " + Math.round(T.len / 60) + " minutes entered into the register");
+        T.mode = "break"; T.left = T.breakLen;
+      } else {
+        toast("Recess concluded — the Authority resumes");
+        T.mode = "work"; T.left = T.len;
+      }
+      render();
+    }
+
+    function timerTick() {
+      T.left--;
+      if (T.left <= 0) { timerEnd(); return; }
+      paintTimer();
+    }
+
+    function timerToggle() {
+      if (T.running) {
+        clearInterval(T.iv); T.iv = null; T.running = false;
+      } else {
+        T.running = true;
+        T.iv = setInterval(timerTick, 1000);
+      }
+      paintTimer();
+    }
+
+    /* ============ render ============ */
+    var CRUMBS = {
+      briefing: ["Office of the Citizen", "Daily Briefing"],
+      finance: ["Departments", "Department of Finance"],
+      metrics: ["Departments", "Department of Metrics"],
+      directives: ["Departments", "Bureau of Operations"],
+      habits: ["Departments", "Habit Compliance"],
+      plan: ["Departments", "Planning Commission"],
+      records: ["Departments", "Office of Records"],
+      attention: ["Departments", "Attention Authority"]
+    };
+
+    function render() {
+      $("#view").innerHTML = views[view]();
+      var c = CRUMBS[view];
+      $("#crumb").innerHTML =
+        '<b>Government of One</b><span class="sep">/</span>' +
+        '<span>' + esc(c[0]) + '</span><span class="sep">/</span>' +
+        '<b>' + esc(c[1]) + '</b>';
+      paintTimer();
+      colophon();
+    }
+
+    function go(v) {
+      if (!views[v]) return;
+      view = v;
+      $$("#nav .nav-btn").forEach(function (b) {
+        b.classList.toggle("active", b.dataset.view === v);
+      });
+      render();
+    }
+
+    $("#nav").addEventListener("click", function (e) {
+      var b = e.target.closest("[data-view]");
+      if (b) go(b.dataset.view);
+    });
+
+    /* ============ forms ============ */
+    document.addEventListener("submit", function (e) {
+      var f = e.target;
+
+      if (f.id === "financeForm") {
+        e.preventDefault();
+        var title = $("#finTitle").value.trim();
+        var amount = parseFloat($("#finAmount").value);
+        if (!title) { toast("An instrument requires a description"); return; }
+        if (!isFinite(amount) || amount <= 0) { toast("An instrument requires an amount greater than zero"); return; }
+        var ref = newRef("DFIN");
+        S.finance.unshift({
+          id: uid(), ref: ref, title: title, amount: Math.round(amount * 100) / 100,
+          kind: $("#finKind").value, category: $("#finCat").value,
+          status: "issued", ts: Date.now(), passedTs: 0
+        });
+        save(); render();
+        toast(ref + " issued — awaiting assent");
+        $("#finTitle").value = ""; $("#finAmount").value = "";
+        $("#finTitle").focus();
+      }
+
+      if (f.id === "directiveForm") {
+        e.preventDefault();
+        var text = $("#dirInput").value.trim();
+        if (!text) { toast("A directive requires text"); return; }
+        var dref = newRef("DOPS");
+        S.directives.unshift({ id: uid(), ref: dref, text: text, prio: $("#dirPrio").value, done: false, ts: Date.now() });
+        save(); render();
+        toast(dref + " entered on the register");
+        $("#dirInput").value = "";
+        $("#dirInput").focus();
+      }
+
+      if (f.id === "habitForm") {
+        e.preventDefault();
+        var name = $("#habitInput").value.trim();
+        if (!name) { toast("An obligation requires a name"); return; }
+        S.habits.push({ id: uid(), name: name, days: {}, color: HABIT_COLORS[S.habits.length % HABIT_COLORS.length] });
+        save(); render();
+        toast("Obligation registered: " + name);
+        $("#habitInput").value = "";
+        $("#habitInput").focus();
+      }
+
+      if (f.id === "planForm") {
+        e.preventDefault();
+        var pt = $("#planTitle").value.trim();
+        var ptgt = parseInt($("#planTarget").value, 10);
+        if (!pt || !isFinite(ptgt) || ptgt < 1) { toast("A milestone requires a title and a target above zero"); return; }
+        S.plan.push({ id: uid(), title: pt, current: 0, target: ptgt, unit: $("#planUnit").value.trim() });
+        save(); render();
+        toast("Milestone commissioned: " + pt);
+        $("#planTitle").value = ""; $("#planTarget").value = ""; $("#planUnit").value = "";
+        $("#planTitle").focus();
+      }
+
+      if (f.id === "recordForm") {
+        e.preventDefault();
+        var rt = $("#recordInput").value.trim();
+        if (!rt) { toast("A record requires text"); return; }
+        var rref = newRef("DOCR");
+        S.records.unshift({ id: uid(), ref: rref, text: rt, ts: Date.now() });
+        save(); render();
+        toast(rref + " filed");
+        $("#recordInput").value = "";
+        $("#recordInput").focus();
+      }
+    });
+
+    /* ============ actions ============ */
+    document.addEventListener("click", function (e) {
+      var goto = e.target.closest("[data-goto]");
+      if (goto) { go(goto.dataset.goto); return; }
+
+      var lf = e.target.closest("[data-lfilter]");
+      if (lf) { ledgerFilter = lf.dataset.lfilter; render(); return; }
+
+      var df = e.target.closest("[data-dfilter]");
+      if (df) { dirFilter = df.dataset.dfilter; render(); return; }
+
+      var el = e.target.closest("[data-act]");
+      if (!el) return;
+      var act = el.dataset.act;
+      var id = el.dataset.id;
+      var i;
+
+      /* finance lifecycle */
+      if (act === "pass-finance" || act === "void-finance" || act === "recall-finance" ||
+          act === "reinstate-finance" || act === "del-finance") {
+        i = S.finance.findIndex(function (x) { return x.id === id; });
+        if (i < 0) return;
+        var rec = S.finance[i];
+        if (act === "pass-finance") { rec.status = "passed"; rec.passedTs = Date.now(); toast(rec.ref + " passed into force"); }
+        if (act === "void-finance") { rec.status = "withdrawn"; rec.passedTs = 0; toast(rec.ref + " voided"); }
+        if (act === "recall-finance") { rec.status = "issued"; rec.passedTs = 0; toast(rec.ref + " recalled for re-examination"); }
+        if (act === "reinstate-finance") { rec.status = "issued"; rec.passedTs = 0; toast(rec.ref + " reinstated on the ledger"); }
+        if (act === "del-finance") { S.finance.splice(i, 1); toast(rec.ref + " expunged from the ledger"); }
+        save(); render(); return;
+      }
+
+      /* directives */
+      if (act === "complete-directive" || act === "reopen-directive" || act === "del-directive") {
+        i = S.directives.findIndex(function (x) { return x.id === id; });
+        if (i < 0) return;
+        if (act === "complete-directive") { S.directives[i].done = true; toast("Directive executed: " + S.directives[i].ref); }
+        if (act === "reopen-directive") { S.directives[i].done = false; toast("Directive reopened: " + S.directives[i].ref); }
+        if (act === "del-directive") { var r = S.directives[i].ref; S.directives.splice(i, 1); toast(r + " struck from the register"); }
+        save(); render(); return;
+      }
+
+      /* compliance */
+      if (act === "toggle-habit") {
+        var hi = S.habits.findIndex(function (x) { return x.id === id; });
+        if (hi < 0) return;
+        var day = el.dataset.day;
+        if (S.habits[hi].days[day]) delete S.habits[hi].days[day];
+        else S.habits[hi].days[day] = true;
+        save(); render(); return;
+      }
+      if (act === "del-habit") {
+        S.habits = S.habits.filter(function (x) { return x.id !== id; });
+        save(); render(); toast("Obligation deregistered"); return;
+      }
+
+      /* milestones */
+      if (act === "plan-inc" || act === "plan-dec") {
+        i = S.plan.findIndex(function (x) { return x.id === id; });
+        if (i < 0) return;
+        var g = S.plan[i];
+        var step = Math.max(1, Math.round(g.target / 25));
+        var cap = g.target > 0 ? g.target : Infinity;
+        g.current = clamp(g.current + (act === "plan-inc" ? step : -step), 0, cap);
+        if (g.target > 0 && g.current === g.target) toast("Milestone reached: " + g.title);
+        save(); render(); return;
+      }
+      if (act === "del-plan") {
+        S.plan = S.plan.filter(function (x) { return x.id !== id; });
+        save(); render(); toast("Milestone withdrawn"); return;
+      }
+
+      /* records */
+      if (act === "del-record") {
+        S.records = S.records.filter(function (x) { return x.id !== id; });
+        save(); render(); toast("Record expunged"); return;
+      }
+    });
+
+    /* timer controls */
+    document.addEventListener("click", function (e) {
+      if (e.target.id === "startBtn") timerToggle();
+      if (e.target.id === "resetTimer") {
+        clearInterval(T.iv); T.iv = null; T.running = false;
+        T.mode = "work"; T.left = T.len;
+        paintTimer();
+      }
+      if (e.target.id === "skipTimer") timerEnd();
+      var pre = e.target.closest && e.target.closest("#presetSeg [data-min]");
+      if (pre) {
+        clearInterval(T.iv); T.iv = null; T.running = false;
+        T.len = +pre.dataset.min * 60;
+        T.breakLen = +pre.dataset.brk * 60;
+        T.mode = "work"; T.left = T.len;
+        render();
+      }
+    });
+
+    /* ============ utilities: export / reset ============ */
+    $("#exportBtn").addEventListener("click", function () {
+      var blob = new Blob([JSON.stringify(S, null, 2)], { type: "application/json" });
+      var a = document.createElement("a");
+      a.href = URL.createObjectURL(blob);
+      a.download = "govone-register-" + iso() + ".json";
+      a.click();
+      setTimeout(function () { URL.revokeObjectURL(a.href); }, 1000);
+      toast("Register exported");
+    });
+
+    $("#resetBtn").addEventListener("click", function () {
+      if (!confirm("All registers will be destroyed and the demonstration records restored. Continue?")) return;
+      S = seed(); save(); go("briefing"); toast("All records reset");
+    });
+
+    /* ============ keyboard ============ */
+    var ORDER = ["briefing", "finance", "metrics", "directives", "habits", "plan", "records", "attention"];
+    document.addEventListener("keydown", function (e) {
+      var tag = document.activeElement ? document.activeElement.tagName : "";
+      if (/^(INPUT|TEXTAREA|SELECT)$/.test(tag)) return;
+      if (e.key >= "1" && e.key <= "8") go(ORDER[+e.key - 1]);
+    });
+
+    /* ============ debug hook ============ */
+    if (/[?&]debug=1/.test(location.search)) {
+      window.govone = {
+        key: KEY,
+        get state() { return S; },
+        get timer() { return T; },
+        get view() { return view; },
+        go: go,
+        render: render,
+        save: save,
+        newSeed: seed,
+        metrics: metricsData,
+        index: nationalIndex,
+        replace: function (next) {
+          S = next;
+          dirFilter = "all";
+          ledgerFilter = "all";
+          save();
+          render();
+        }
+      };
+    }
+
+    /* ============ boot ============ */
+    colophon();
+    render();
+  })();
+  </script>
+</body>
+</html>
