@@ -9,6 +9,12 @@ await __test('state shape after ' + window.__scenario.name, async () => {
   __assert(Array.isArray(s.records), 'records not array');
   __assert(s.metrics && typeof s.metrics === 'object' && !Array.isArray(s.metrics.history), 'metrics.history not a map');
   __assert(s.seqs && typeof s.seqs === 'object', 'seqs missing');
+  __assert(s.council && typeof s.council === 'object', 'council missing');
+  __assert(Array.isArray(s.council.parliamentarians), 'council.parliamentarians not array');
+  __assert(Array.isArray(s.council.wards), 'council.wards not array');
+  __assert(Array.isArray(s.council.motions), 'council.motions not array');
+  __assert(typeof s.council.mayorName === 'string' && s.council.mayorName, 'council.mayorName missing');
+  __assert(s.council.motions.every((m) => m && (!m.tally || (isFinite(m.tally['for']) && isFinite(m.tally.against) && isFinite(m.tally.abstain)))), 'council tally not numeric');
   if (window.__scenario.expect === 'seed') __assert(s.finance.length > 0, 'seed should have data');
   if (window.__scenario.expect === 'empty') __eq(s.finance.length, 0, 'expected empty ledger');
   if (window.__scenario.expect === 'huge') __eq(s.finance.length, 2000, 'bulk lost: ' + s.finance.length);

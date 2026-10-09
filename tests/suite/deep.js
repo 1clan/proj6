@@ -135,6 +135,9 @@ await __test('keyboard 1–8 navigates departments', async()=>{
   press('8', 'Digit8');
   await sleep(80);
   __eq(L.view, 'attention', 'key 8 → attention');
+  press('9', 'Digit9');
+  await sleep(80);
+  __eq(L.view, 'council', 'key 9 → council');
   press('1', 'Digit1');
   await sleep(80);
 });

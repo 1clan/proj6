@@ -98,7 +98,7 @@ const $$ = (s, r = document) => Array.from((r || document).querySelectorAll(s));
 const clone = (o) => JSON.parse(JSON.stringify(o));
 const money = (n) => (n < 0 ? '\\u2212' : '') + '$' + Math.abs(Math.round(n)).toLocaleString('en-US');
 const bal = () => L.state.finance.reduce((a, f) => a + (f.status === 'passed' ? (f.kind === 'revenue' ? f.amount : -f.amount) : 0), 0);
-const VIEWS = ['briefing', 'finance', 'metrics', 'directives', 'habits', 'plan', 'records', 'attention'];
+const VIEWS = ['briefing', 'finance', 'metrics', 'directives', 'habits', 'plan', 'records', 'attention', 'council'];
 const ev = (x) => eval(x);
 const lines = window.__T.lines;
 `;
@@ -111,6 +111,7 @@ async function runSuite(src, scenario) {
 
 const SMOKE = await readFile(path.join(import.meta.dirname, 'suite', 'smoke.js'), 'utf8');
 const DEEP = await readFile(path.join(import.meta.dirname, 'suite', 'deep.js'), 'utf8');
+const COUNCIL = await readFile(path.join(import.meta.dirname, 'suite', 'council.js'), 'utf8');
 const CHECK = await readFile(path.join(import.meta.dirname, 'suite', 'check.js'), 'utf8');
 
 /* ---------------- corruption scenarios ---------------- */
@@ -138,6 +139,7 @@ const SCENARIOS = [
       plan: [null, { target: 'x' }, { title: 'ok', target: 10, current: 5 }],
       records: [null, { text: 42 }, { text: 'fine' }],
       metrics: { history: [null, { x: 1 }, 'bad'] },
+      council: { city: 42, mayorName: null, parliamentarians: [null, { name: 3 }, { name: 'ok', faction: 'Nope', stance: 'sideways', present: 'yes' }], wards: [null, { name: 'w' }], motions: [null, { title: 'm', status: 'bad', tally: { 'for': 'x', against: null, abstain: 2 } }] },
       seqs: { DFIN: 'NaN', DMTR: -3 }
     })
   },
@@ -149,6 +151,12 @@ const SCENARIOS = [
       directives: Array.from({ length: 200 }, (_, i) => ({ id: 'd' + i, title: 'Directive ' + i, status: 'pending' })),
       habits: Array.from({ length: 60 }, (_, i) => ({ id: 'h' + i, name: 'Habit ' + i, days: { '2026-01-05': true } })),
       metrics: { history: Object.fromEntries(Array.from({ length: 400 }, (_, i) => ['2026-01-' + String((i % 28) + 1).padStart(2, '0'), i % 101])) },
+      council: {
+        city: 'Bulk City', mayorName: 'Bulk Mayor',
+        parliamentarians: Array.from({ length: 120 }, (_, i) => ({ id: 'p' + i, name: 'Cllr ' + i, faction: 'Independent', portfolio: 'P', stance: ['for', 'against', 'abstain'][i % 3], present: i % 2 === 0 })),
+        wards: Array.from({ length: 80 }, (_, i) => ({ id: 'w' + i, name: 'Ward Member ' + i, ward: 'Ward ' + i })),
+        motions: Array.from({ length: 300 }, (_, i) => ({ id: 'm' + i, ref: 'DCON-2026-' + String(i).padStart(4, '0'), title: 'Motion ' + i, mover: 'The Mayor', status: ['tabled', 'carried', 'vetoed', 'defeated'][i % 4], ts: 1700000000000 + i, tally: { 'for': i % 3, against: i % 2, abstain: i % 4 } }))
+      },
       seqs: { DFIN: 2000 }
     })
   }
@@ -219,6 +227,10 @@ async function main() {
   console.log('── phase 2: deep functional ──────────────────────────────');
   await goto(BASE);
   collect('deep', await runSuite(DEEP));
+
+  console.log('── phase 2c: city council ────────────────────────────────');
+  await goto(BASE);
+  collect('council', await runSuite(COUNCIL));
 
   console.log('── phase 2b: persistence round-trip ──────────────────────');
   await goto(BASE);
